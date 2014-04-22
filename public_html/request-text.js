@@ -5,23 +5,35 @@
  */
 var panel, request;
 
-function showStatus()
+function showText()
 {
     if (request.readyState === 4)
     {
         if (request.status === 200)
         {
-            panel.innerHTML += "<br>Request succeeded";
+            panel.innerHTML += "<br>" + request.responseText;
         }
     }
 }
 
 function doRequest()
 {
-    request = new XMLHttpRequest();
+    if (XMLHttpRequest)
+    {
+        request = new XMLHttpRequest();
+    }
+    else if (ActiveXObject)
+    {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else
+    {
+        return false;
+    }
+    
     request.open("GET", "data.txt", true);
     request.send(null);
-    request.onreadystatechange = showStatus;
+    request.onreadystatechange = showText;
 }
 
 function init()
