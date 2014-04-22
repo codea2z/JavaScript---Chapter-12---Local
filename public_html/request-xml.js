@@ -10,11 +10,11 @@ function showXML()
     if ((request.readyState === 4) &&
        (request.status === 200))
     {
-        var i, names = 
-        request.responseXML.getElementsByTagName("name");
-        for (i = 0; i < names.length; i++)
+        var i, nums = 
+        request.responseXML.getElementsByTagName("num");
+        for (i = 0; i < nums.length; i++)
         {
-            panel.innerHTML += "<br>" + names[i].firstChild.data;
+            panel.innerHTML += "<br>" + nums[i].firstChild.data;
         }    
     }
     
