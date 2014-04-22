@@ -61,7 +61,7 @@ function populateCells()
     var i, nums = xml.getElementsByTagName("num");
     for (i = 0; i < nums.length; i++)
     {
-        document.getElementById("n" + i).innerHTML += nums[i].firstChild.data;
+        document.getElementById("n" + i).innerHTML = nums[i].firstChild.data;
         
         totalise();
     }
@@ -75,6 +75,48 @@ function storeXML()
         xml = request.responseXML;
         populateCells();
     }
+}
+
+function update()
+{
+    var row = document.getElementById("rownum").options.selectedIndex;
+    var col = document.getElementById("colnum").options.selectedIndex;
+    var new_value =
+              document.getElementById("new_value").value;
+      
+    var panel = document.getElementById("title");
+    
+    if (row === 0)
+    {
+        panel.innerHTML = "Select a row"; 
+        return;
+    }
+    if (col === 0)
+    {
+        panel.innerHTML = "Select a column"; 
+        return;
+    }
+   if (!new_value)
+   {
+       panel.innerHTML = "Enter a value"; 
+       return;
+   }
+   if (isNaN(new_value))
+   {
+       panel.innerHTML = "Enter number"; 
+       return;
+   }
+   
+   var target = (((row - 1) * 5) + col) - 1;
+   xml.getElementsByTagName("num")[target].firstChild.data 
+           = formatted(new_value);
+   populateCells();
+   totalise();
+   
+   document.getElementById("rownum").options[0].selected = true;
+   document.getElementById("colnum").options[0].selected = true;
+   document.getElementById("new_value").value = "";
+   document.getElementById("title").innerHTML = "Cell Editor";
 }
 
 function init()
@@ -96,7 +138,7 @@ function init()
     request.send(null);
     request.onreadystatechange = storeXML;
    
-    //document.getElementById("btn").onclick = update;
+    document.getElementById("btn").onclick = update;
 }
 
 document.addEventListener("DOMContentLoaded", init, false);
